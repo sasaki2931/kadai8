@@ -1,6 +1,5 @@
 class PropertiesController < ApplicationController
   before_action :set_property, only: %i[ show edit update destroy ]
-
   
   def index
     @properties = Property.all
@@ -13,7 +12,7 @@ class PropertiesController < ApplicationController
   # GET /properties/new
   def new
     @property = Property.new
-    @property.stations.new
+    2.times { @property.stations.build }
   end
 
   # GET /properties/1/edit

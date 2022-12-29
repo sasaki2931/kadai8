@@ -35,10 +35,10 @@
     <%= form.label :content,"備考" %>
     <%= form.text_field :content %>
   </div>
-
+  
+ <% number = 0%>
  <%= form.fields_for :stations do | station | %>
-
-
+  <h2>最寄駅<%= number += 1 %></h2>
   <%= station.label :route, "路線名" %>
   <%= station.text_field :route %>
 
@@ -51,7 +51,7 @@
  <% end %>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit "登録する" %>
   </div>
 <% end %>
 
