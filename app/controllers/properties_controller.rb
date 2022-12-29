@@ -1,7 +1,7 @@
 class PropertiesController < ApplicationController
   before_action :set_property, only: %i[ show edit update destroy ]
 
-  # GET /properties or /properties.json
+  
   def index
     @properties = Property.all
   end
@@ -13,6 +13,7 @@ class PropertiesController < ApplicationController
   # GET /properties/new
   def new
     @property = Property.new
+    @property.stations.new
   end
 
   # GET /properties/1/edit
@@ -65,6 +66,6 @@ class PropertiesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def property_params
-      params.require(:property).permit(:name, :maney, :from, :age, :content)
+      params.require(:property).permit(:name, :maney, :from, :age, :content,stations_attributes: [:id, :route, :station_name, :distance])
     end
 end
