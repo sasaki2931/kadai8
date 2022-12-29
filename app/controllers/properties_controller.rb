@@ -1,12 +1,13 @@
 class PropertiesController < ApplicationController
   before_action :set_property, only: %i[ show edit update destroy ]
-  
+  before_action :set_stations, only: [:show, :edit, :update]
   def index
     @properties = Property.all
   end
 
   # GET /properties/1 or /properties/1.json
   def show
+    @stations = @property.stations
   end
 
   # GET /properties/new
@@ -17,6 +18,7 @@ class PropertiesController < ApplicationController
 
   # GET /properties/1/edit
   def edit
+    @property.stations.build 
   end
 
   # POST /properties or /properties.json
@@ -25,6 +27,9 @@ class PropertiesController < ApplicationController
 
     respond_to do |format|
       if @property.save
+        Station.where("route=='' OR station_name=='' OR distance == NULL").each do |station|
+          station.destroy
+        end
         format.html { redirect_to property_url(@property), notice: "Property was successfully created." }
         format.json { render :show, status: :created, location: @property }
       else
@@ -38,6 +43,9 @@ class PropertiesController < ApplicationController
   def update
     respond_to do |format|
       if @property.update(property_params)
+        Station.where("route=='' OR station_name=='' OR distance == NULL").each do |station|
+          station.destroy
+        end
         format.html { redirect_to property_url(@property), notice: "Property was successfully updated." }
         format.json { render :show, status: :ok, location: @property }
       else
@@ -62,6 +70,11 @@ class PropertiesController < ApplicationController
     def set_property
       @property = Property.find(params[:id])
     end
+
+    def set_stations
+      @stations = @property.stations
+    end
+
 
     # Only allow a list of trusted parameters through.
     def property_params
